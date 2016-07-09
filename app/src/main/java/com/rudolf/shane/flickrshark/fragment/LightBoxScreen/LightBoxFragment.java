@@ -28,15 +28,8 @@ public class LightBoxFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_light_box, container, false);
-        final ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewLightBox);
-
-//        new SimpleCountDownTimer(1000){
-//            @Override
-//            public void onFinish() {
-                Picasso.with(getContext()).load(originalImageUrl).fit().centerInside().placeholder(thumpNailDrawable).into(imageView);
-//            }
-//        }.start();
-
+        ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewLightBox);
+        Picasso.with(getContext()).load(originalImageUrl).fit().centerInside().placeholder(thumpNailDrawable).into(imageView);
         return rootView;
     }
 
