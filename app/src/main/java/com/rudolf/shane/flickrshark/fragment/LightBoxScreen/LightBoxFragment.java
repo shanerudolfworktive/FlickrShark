@@ -1,5 +1,7 @@
 package com.rudolf.shane.flickrshark.fragment.LightBoxScreen;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.rudolf.shane.flickrshark.R;
 import com.rudolf.shane.flickrshark.base.BaseFragment;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import uk.co.senab.photoview.PhotoView;
@@ -22,7 +25,8 @@ public class LightBoxFragment extends BaseFragment{
     String originalImageUrl;
 
     boolean isOverLayShown = false;
-    LightBoxOverLayFragment lightBoxOverLayFragment = new LightBoxOverLayFragment();
+
+    LightBoxOverLayFragment lightBoxOverLayFragment = LightBoxOverLayFragment.create();
     public static LightBoxFragment create(Drawable thumpNailDrawable, String originalImageUrl){
         LightBoxFragment lightBoxFragment = new LightBoxFragment();
         lightBoxFragment.thumpNailDrawable = thumpNailDrawable;
@@ -38,9 +42,20 @@ public class LightBoxFragment extends BaseFragment{
     }
 
     private void loadInitialView(View rootView ){
-        PhotoView photoView = (PhotoView) rootView.findViewById(R.id.imageViewLightBox);
+        final PhotoView photoView = (PhotoView) rootView.findViewById(R.id.imageViewLightBox);
         photoView.setOnPhotoTapListener(createToggleOverLayListener());
-        Picasso.with(getContext()).load(originalImageUrl).fit().centerInside().placeholder(thumpNailDrawable).into(photoView);
+        Picasso.with(getContext()).load(originalImageUrl).fit().centerInside().placeholder(thumpNailDrawable).into(photoView, new Callback() {
+            @Override
+            public void onSuccess() {
+                Bitmap originalBitmap = ((BitmapDrawable)photoView.getDrawable()).getBitmap();
+                lightBoxOverLayFragment.setBitmapToSaveToSDCard(originalBitmap);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 
     private PhotoViewAttacher.OnPhotoTapListener createToggleOverLayListener(){
@@ -57,4 +72,9 @@ public class LightBoxFragment extends BaseFragment{
         };
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (lightBoxOverLayFragment != null)getActivity().getSupportFragmentManager().beginTransaction().remove(lightBoxOverLayFragment).commit();
+    }
 }
