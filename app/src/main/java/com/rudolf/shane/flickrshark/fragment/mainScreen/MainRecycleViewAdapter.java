@@ -11,15 +11,15 @@ import com.rudolf.shane.flickrshark.R;
 /**
  * Created by shane on 7/9/16.
  */
-public class InfiniteScrollRecycleViewAdapter extends RecyclerView.Adapter<InfiniteScrollRecycleViewAdapter.ViewHolder> {
+public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleViewAdapter.ViewHolder> {
     private String[] mDataset = new String[]{"a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"};
 
-    public InfiniteScrollRecycleViewAdapter(String[] myDataset) {
+    public MainRecycleViewAdapter(String[] myDataset) {
 
     }
 
     @Override
-    public InfiniteScrollRecycleViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MainRecycleViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_main_shark_display, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -35,9 +35,16 @@ public class InfiniteScrollRecycleViewAdapter extends RecyclerView.Adapter<Infin
     }
 
     // Return the size of your dataset (invoked by the layout manager)
+
+    int itemCount = 40;
+    public void setItemCount(int itemCount){
+        this.itemCount =itemCount;
+//        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return itemCount;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
