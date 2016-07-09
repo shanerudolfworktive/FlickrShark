@@ -9,19 +9,19 @@ import java.util.ArrayList;
  */
 public class FlickrSearchPhotoModel {
 
-    public PhotosModel photoes;
+    public PhotosModel photos;
 
     public static class PhotosModel{
         public int page;
         public int pages;
         public int perpage;
         public int total;
-        ArrayList<PhotoModel> photo;
+        public ArrayList<PhotoModel> photo;
     }
 
 
     public static class PhotoModel{
-        public int id;
+        public long id;
         public String title;
         @SerializedName("url_t")
         public String thumbNeilUrl;

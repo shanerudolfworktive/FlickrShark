@@ -36,17 +36,18 @@ public class MainActivityFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new MainRecycleViewAdapter(new String[]{});
+        adapter = new MainRecycleViewAdapter();
         photosModelRequest = new GsonRequest<FlickrSearchPhotoModel>(Constants.FLICKR_SEARCH_URL, FlickrSearchPhotoModel.class, null) {
             @Override
             protected void deliverResponse(FlickrSearchPhotoModel response, boolean isFromCache) {
-                Log.e("shaneTest", "success");
+                adapter.setData(response.photos.photo);
+                adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void deliverError(VolleyError error, FlickrSearchPhotoModel cachedResponse) {
-                Log.e("shaneTest", "fail");
+                Log.e("shaneTest", "fail="+error.getLocalizedMessage());
                 swipeRefreshLayout.setRefreshing(false);
             }
         };
@@ -58,17 +59,15 @@ public class MainActivityFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewMainShark);
+        recyclerView.setAdapter(adapter);
         layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
-
-        recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new InifiniteScrollListener(layoutManager, adapter));
 
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.e("shaneTest", "sendRequest");
                 photosModelRequest.sendRequest(getActivity());
             }
         });
