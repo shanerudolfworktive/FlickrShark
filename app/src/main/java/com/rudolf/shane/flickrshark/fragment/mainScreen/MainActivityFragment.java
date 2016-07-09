@@ -2,7 +2,6 @@ package com.rudolf.shane.flickrshark.fragment.mainScreen;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,39 +27,25 @@ public class MainActivityFragment extends BaseFragment {
     Integer totalChildBeforOrientationChange = null;
     Integer listPositionBeforOrientationChange = null;
 
+    //view
     RecyclerView recyclerView;
-    MainRecycleViewAdapter adapter;
-    GridLayoutManager layoutManager;
+    MainRecycleViewAdapter adapter = new MainRecycleViewAdapter();;
     SwipeRefreshLayout swipeRefreshLayout;
 
     GsonRequest<FlickrSearchPhotoModel> photosModelRequest;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        adapter = new MainRecycleViewAdapter();
-        photosModelRequest = new GsonRequest<FlickrSearchPhotoModel>(Constants.FLICKR_SEARCH_URL, FlickrSearchPhotoModel.class, null) {
-            @Override
-            protected void deliverResponse(FlickrSearchPhotoModel response, boolean isFromCache) {
-                adapter.setData(response.photos.photo);
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void deliverError(VolleyError error, FlickrSearchPhotoModel cachedResponse) {
-                Log.e("shaneTest", "fail="+error.getLocalizedMessage());
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        };
-        requestToCancelOnDestroy.add(photosModelRequest);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        loadInitialView(rootView);//load initial views
+        restoreViewState(rootView);//restore view state
+        return rootView;
+    }
+
+    private void loadInitialView(View rootView){
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewMainShark);
         recyclerView.setAdapter(adapter);
+        GridLayoutManager layoutManager;
         layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(new InifiniteScrollListener(layoutManager, adapter));
@@ -79,18 +64,42 @@ public class MainActivityFragment extends BaseFragment {
             }
         });
 
-        //View States
+        //send request if it is first time loading the view
+        if (photosModelRequest == null) photosModelRequest = createFlickrSearchRequest().sendRequest(getActivity());
+    }
+
+    private void restoreViewState(View rootView) {
         if (totalChildBeforOrientationChange != null) adapter.setItemCount(totalChildBeforOrientationChange);
         if (listPositionBeforOrientationChange != null) recyclerView.offsetChildrenVertical(listPositionBeforOrientationChange);
+    }
 
-        return rootView;
+    private void saveViewState(){
+        totalChildBeforOrientationChange = adapter.getItemCount();
+        listPositionBeforOrientationChange = recyclerView.computeVerticalScrollOffset();
+    }
+
+    private GsonRequest<FlickrSearchPhotoModel> createFlickrSearchRequest(){
+        GsonRequest<FlickrSearchPhotoModel> request = new GsonRequest<FlickrSearchPhotoModel>(Constants.FLICKR_SEARCH_URL, FlickrSearchPhotoModel.class, null) {
+            @Override
+            protected void deliverResponse(FlickrSearchPhotoModel response, boolean isFromCache) {
+                adapter.setData(response.photos.photo);
+                adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void deliverError(VolleyError error, FlickrSearchPhotoModel cachedResponse) {
+                Log.e("shaneTest", "fail="+error.getLocalizedMessage());
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        };
+        requestToCancelOnDestroy.add(request);
+        return request;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //Save View States
-        totalChildBeforOrientationChange = adapter.getItemCount();
-        listPositionBeforOrientationChange = recyclerView.computeVerticalScrollOffset();
+        saveViewState();
     }
 }
