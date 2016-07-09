@@ -1,5 +1,6 @@
 package com.rudolf.shane.flickrshark.fragment.mainScreen;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import com.android.volley.VolleyError;
 import com.rudolf.shane.flickrshark.R;
 import com.rudolf.shane.flickrshark.base.BaseFragment;
+import com.rudolf.shane.flickrshark.fragment.LightBoxScreen.LightBoxFragment;
 import com.rudolf.shane.flickrshark.model.FlickrSearchPhotoModel;
 import com.rudolf.shane.flickrshark.utils.Constants;
 import com.rudolf.shane.flickrshark.volley.GsonRequest;
@@ -62,6 +64,12 @@ public class MainActivityFragment extends BaseFragment {
         layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(new InifiniteScrollListener(layoutManager, adapter));
+        adapter.setOnItemSelectedListener(new MainRecycleViewAdapter.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Drawable drawable, String originalImageUrl) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(getId(), LightBoxFragment.create(drawable, originalImageUrl)).addToBackStack(null).commit();
+            }
+        });
 
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

@@ -1,7 +1,7 @@
 package com.rudolf.shane.flickrshark.fragment.mainScreen;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,32 +18,36 @@ import java.util.ArrayList;
  */
 public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleViewAdapter.ViewHolder> {
     ArrayList<FlickrSearchPhotoModel.PhotoModel> photos;
-
+    Integer itemCount = null;
     public void setData(ArrayList<FlickrSearchPhotoModel.PhotoModel> photos){
         this.photos = photos;
         if(itemCount == null) itemCount = this.photos.size();
     }
 
+    OnItemSelectedListener onItemSelectedListener;
+    public void setOnItemSelectedListener(OnItemSelectedListener onItemSelectedListener){
+        this.onItemSelectedListener = onItemSelectedListener;
+    }
+
     @Override
     public MainRecycleViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.e("shaneTest", "onccreate recycle view");
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_main_shark_display, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
-
-
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        int modulizedPosition = position % photos.size();
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final int modulizedPosition = position % photos.size();
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemSelectedListener != null) onItemSelectedListener.onItemSelected(holder.imageView.getDrawable(), photos.get(modulizedPosition).originalPhotoUrl);
+            }
+        });
         Picasso.with(holder.imageView.getContext()).load(photos.get(modulizedPosition).thumbNeilUrl).fit().centerInside().into(holder.imageView);
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-
-    Integer itemCount = null;
     public void setItemCount(int itemCount){
         this.itemCount =itemCount;
     }
@@ -55,12 +59,19 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
+        public View rootView;
 
         public ViewHolder(View rootView) {
             super(rootView);
             imageView = (ImageView)rootView.findViewById(R.id.imageViewPhoto);
+            this.rootView = rootView;
         }
     }
+
+    public interface OnItemSelectedListener{
+        void onItemSelected(Drawable drawable, String originalImageUrl);
+    }
+
 }
 
 

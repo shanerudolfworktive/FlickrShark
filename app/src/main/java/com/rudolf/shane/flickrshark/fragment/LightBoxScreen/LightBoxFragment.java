@@ -1,7 +1,6 @@
 package com.rudolf.shane.flickrshark.fragment.LightBoxScreen;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 
 import com.rudolf.shane.flickrshark.R;
 import com.rudolf.shane.flickrshark.base.BaseFragment;
-import com.rudolf.shane.flickrshark.workerObj.SimpleCountDownTimer;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -18,11 +16,11 @@ import com.squareup.picasso.Picasso;
  */
 public class LightBoxFragment extends BaseFragment{
 
-    Bitmap thumpNailBitmap;
+    Drawable thumpNailDrawable;
     String originalImageUrl;
-    public static LightBoxFragment create(Bitmap thumpNailBitmap, String originalImageUrl){
+    public static LightBoxFragment create(Drawable thumpNailDrawable, String originalImageUrl){
         LightBoxFragment lightBoxFragment = new LightBoxFragment();
-        lightBoxFragment.thumpNailBitmap = thumpNailBitmap;
+        lightBoxFragment.thumpNailDrawable = thumpNailDrawable;
         lightBoxFragment.originalImageUrl = originalImageUrl;
         return lightBoxFragment;
     }
@@ -31,13 +29,13 @@ public class LightBoxFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_light_box, container, false);
         final ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewLightBox);
-        imageView.setImageBitmap(thumpNailBitmap);
-        new SimpleCountDownTimer(1000){
-            @Override
-            public void onFinish() {
-                Picasso.with(getContext()).load(originalImageUrl).fit().centerInside().placeholder(new BitmapDrawable(getResources(), thumpNailBitmap)).into(imageView);
-            }
-        }.start();
+
+//        new SimpleCountDownTimer(1000){
+//            @Override
+//            public void onFinish() {
+                Picasso.with(getContext()).load(originalImageUrl).fit().centerInside().placeholder(thumpNailDrawable).into(imageView);
+//            }
+//        }.start();
 
         return rootView;
     }
