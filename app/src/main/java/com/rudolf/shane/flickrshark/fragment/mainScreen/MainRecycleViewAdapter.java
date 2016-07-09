@@ -1,6 +1,7 @@
 package com.rudolf.shane.flickrshark.fragment.mainScreen;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
 
     @Override
     public MainRecycleViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.e("shaneTest", "onccreate recycle view");
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_main_shark_display, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -36,7 +38,7 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         int modulizedPosition = position % photos.size();
-        Picasso.with(holder.imageView.getContext()).load(photos.get(modulizedPosition).thumbNeilUrl).fit().centerInside().noFade().into(holder.imageView);
+        Picasso.with(holder.imageView.getContext()).load(photos.get(modulizedPosition).thumbNeilUrl).fit().centerInside().into(holder.imageView);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

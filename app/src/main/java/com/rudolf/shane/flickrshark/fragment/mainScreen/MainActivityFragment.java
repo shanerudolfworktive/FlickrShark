@@ -52,7 +52,6 @@ public class MainActivityFragment extends BaseFragment {
             }
         };
         requestToCancelOnDestroy.add(photosModelRequest);
-
     }
 
     @Override
@@ -68,7 +67,7 @@ public class MainActivityFragment extends BaseFragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                photosModelRequest.sendRequest(getActivity());
+                photosModelRequest.setShouldCacheResponse(true).setShouldGetCachedResponseFirst(true).setShouldOnlyNotifyFromCache(true).sendRequest(getActivity());
             }
         });
 
