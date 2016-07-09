@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.rudolf.shane.flickrshark.R;
-import com.rudolf.shane.flickrshark.fragment.FlashScreenFragment;
+import com.rudolf.shane.flickrshark.fragment.flashScreen.FlashScreenFragment;
 
 /**
  * Created by shane on 7/9/16.

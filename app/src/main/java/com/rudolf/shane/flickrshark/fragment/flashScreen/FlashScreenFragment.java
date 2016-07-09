@@ -1,5 +1,6 @@
-package com.rudolf.shane.flickrshark.fragment;
+package com.rudolf.shane.flickrshark.fragment.flashScreen;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,9 +18,12 @@ import com.rudolf.shane.flickrshark.workerObj.SimpleCountDownTimer;
  */
 public class FlashScreenFragment extends BaseFragment{
 
+    Context context;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getActivity().getApplicationContext();
         preFetchData();
     }
 
@@ -30,10 +34,10 @@ public class FlashScreenFragment extends BaseFragment{
     }
 
     private void preFetchData(){
-        new SimpleCountDownTimer(5000){
+        new SimpleCountDownTimer(0){
             @Override
             public void onFinish() {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
                 getActivity().finish();
             }
