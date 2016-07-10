@@ -74,16 +74,10 @@ public class LightBoxFragment extends BaseFragment{
                 if (isOverLayShown){
                     getActivity().getSupportFragmentManager().beginTransaction().remove(lightBoxOverLayFragment).commit();
                 }else {
-                    getActivity().getSupportFragmentManager().beginTransaction().add(getId(), lightBoxOverLayFragment).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.relativeLayoutLightBox, lightBoxOverLayFragment).commit();
                 }
                 isOverLayShown = !isOverLayShown;
             }
         };
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (lightBoxOverLayFragment != null)getActivity().getSupportFragmentManager().beginTransaction().remove(lightBoxOverLayFragment).commit();
     }
 }
