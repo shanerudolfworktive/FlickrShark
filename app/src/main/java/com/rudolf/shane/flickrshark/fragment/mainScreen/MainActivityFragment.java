@@ -52,7 +52,7 @@ public class MainActivityFragment extends BaseFragment {
         adapter.setOnItemSelectedListener(new MainRecycleViewAdapter.OnItemSelectedListener() {
             @Override
             public void onItemSelected(Drawable drawable, FlickrSearchPhotoModel.PhotoModel photo) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(getId(), LightBoxFragment.create(drawable, photo.originalPhotoUrl, photo.id)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_light_box_scene_animation, R.anim.exit_light_box_scene_animation, R.anim.pop_enter_light_box_scene_animation, R.anim.pop_exit_light_box_scene_animation).replace(getId(), LightBoxFragment.create(drawable, photo.originalPhotoUrl, photo.id)).addToBackStack(null).commit();
             }
         });
 
