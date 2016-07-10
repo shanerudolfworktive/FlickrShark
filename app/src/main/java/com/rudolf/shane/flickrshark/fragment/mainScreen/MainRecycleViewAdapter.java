@@ -42,7 +42,7 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onItemSelectedListener != null) onItemSelectedListener.onItemSelected(holder.imageView.getDrawable(), photos.get(modulizedPosition).originalPhotoUrl);
+                if (onItemSelectedListener != null) onItemSelectedListener.onItemSelected(holder.imageView.getDrawable(), photos.get(modulizedPosition));
             }
         });
         Picasso.with(holder.imageView.getContext()).load(photos.get(modulizedPosition).thumbNeilUrl).fit().centerInside().into(holder.imageView);
@@ -69,7 +69,7 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
     }
 
     public interface OnItemSelectedListener{
-        void onItemSelected(Drawable drawable, String originalImageUrl);
+        void onItemSelected(Drawable drawable, FlickrSearchPhotoModel.PhotoModel photo);
     }
 
 }

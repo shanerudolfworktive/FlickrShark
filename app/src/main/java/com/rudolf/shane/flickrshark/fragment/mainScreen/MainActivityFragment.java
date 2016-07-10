@@ -51,8 +51,8 @@ public class MainActivityFragment extends BaseFragment {
         recyclerView.addOnScrollListener(new InifiniteScrollListener(layoutManager, adapter));
         adapter.setOnItemSelectedListener(new MainRecycleViewAdapter.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(Drawable drawable, String originalImageUrl) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(getId(), LightBoxFragment.create(drawable, originalImageUrl)).addToBackStack(null).commit();
+            public void onItemSelected(Drawable drawable, FlickrSearchPhotoModel.PhotoModel photo) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(getId(), LightBoxFragment.create(drawable, photo.originalPhotoUrl, photo.id)).addToBackStack(null).commit();
             }
         });
 
