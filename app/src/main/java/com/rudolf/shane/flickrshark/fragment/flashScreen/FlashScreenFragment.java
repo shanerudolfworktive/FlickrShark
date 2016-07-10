@@ -43,6 +43,7 @@ public class FlashScreenFragment extends BaseFragment{
         new SimpleCountDownTimer(1000){
             @Override
             public void onFinish() {
+                if (getActivity() == null || isRemoving() || isDetached() || !isAdded()) return;
                 Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
                 getActivity().finish();
