@@ -21,7 +21,7 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
     Integer itemCount = null;
     public void setData(ArrayList<FlickrSearchPhotoModel.PhotoModel> photos){
         this.photos = photos;
-        if(itemCount == null) itemCount = this.photos.size();
+        if(itemCount == null || itemCount == 0) itemCount = this.photos.size();
     }
 
     OnItemSelectedListener onItemSelectedListener;
