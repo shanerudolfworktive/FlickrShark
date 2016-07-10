@@ -40,7 +40,7 @@ public class FlashScreenFragment extends BaseFragment{
         GsonRequest.populateCache(getContext(), Constants.FLICKR_SEARCH_URL, null);
 
         //delay 1 second
-        new SimpleCountDownTimer(0){
+        new SimpleCountDownTimer(1000){
             @Override
             public void onFinish() {
                 Intent intent = new Intent(context, MainActivity.class);

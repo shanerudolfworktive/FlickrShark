@@ -3,6 +3,7 @@ package com.rudolf.shane.flickrshark.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.animation.Animation;
 
 import com.android.volley.Request;
 
@@ -15,12 +16,29 @@ public abstract class BaseFragment extends Fragment {
 
     protected ArrayList<Request> requestToCancelOnDestroy= new ArrayList<>();
     public OnResumeListener onResumeListener;
+    private boolean mNeedToAvoidAnimation;
+
     public interface OnResumeListener{
         void onResume();
     }
 
     public void setOnResumeListener(OnResumeListener onResumeListener){
         this.onResumeListener = onResumeListener;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mNeedToAvoidAnimation = true;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        // This avoids the transaction animation when the orienatation changes
+        boolean needToAvoidAnimation = mNeedToAvoidAnimation;
+        mNeedToAvoidAnimation = false;
+        return needToAvoidAnimation ? new Animation() {
+        } : super.onCreateAnimation(transit, enter, nextAnim);
     }
 
     @Override
