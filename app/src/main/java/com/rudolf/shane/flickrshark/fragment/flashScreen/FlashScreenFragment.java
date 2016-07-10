@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import com.rudolf.shane.flickrshark.MainActivity;
 import com.rudolf.shane.flickrshark.R;
 import com.rudolf.shane.flickrshark.base.BaseFragment;
+import com.rudolf.shane.flickrshark.utils.Constants;
+import com.rudolf.shane.flickrshark.volley.GsonRequest;
 import com.rudolf.shane.flickrshark.workerObj.SimpleCountDownTimer;
 
 /**
@@ -34,6 +36,10 @@ public class FlashScreenFragment extends BaseFragment{
     }
 
     private void preFetchData(){
+        //prepopulate data
+        GsonRequest.populateCache(getContext(), Constants.FLICKR_SEARCH_URL, null);
+
+        //delay 1 second
         new SimpleCountDownTimer(0){
             @Override
             public void onFinish() {

@@ -60,12 +60,12 @@ public class MainActivityFragment extends BaseFragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                photosModelRequest.setShouldCacheResponse(true).setShouldGetCachedResponseFirst(true).setShouldOnlyNotifyFromCache(true).sendRequest(getActivity());
+                photosModelRequest.setShouldCacheResponse(true).sendRequest(getActivity());
             }
         });
 
         //send request if it is first time loading the view
-        if (photosModelRequest == null) photosModelRequest = createFlickrSearchRequest().sendRequest(getActivity());
+        if (photosModelRequest == null) photosModelRequest = createFlickrSearchRequest().setShouldCacheResponse(true).setShouldGetCachedResponseFirst(true).setShouldOnlyNotifyFromCache(true).sendRequest(getActivity());
     }
 
     private void restoreViewState(View rootView) {
