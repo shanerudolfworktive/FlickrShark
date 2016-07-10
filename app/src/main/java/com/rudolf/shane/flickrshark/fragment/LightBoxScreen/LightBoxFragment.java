@@ -67,6 +67,12 @@ public class LightBoxFragment extends BaseFragment{
         });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (isRemoving()) getActivity().getSupportFragmentManager().beginTransaction().remove(lightBoxOverLayFragment).commit();
+    }
+
     private PhotoViewAttacher.OnPhotoTapListener createToggleOverLayListener(){
         return new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
