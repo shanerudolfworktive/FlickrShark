@@ -71,6 +71,7 @@ public class LightBoxFragment extends BaseFragment{
         return new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
+                if (getActivity() == null || isRemoving() || !isResumed()) return;
                 if (isOverLayShown){
                     getActivity().getSupportFragmentManager().beginTransaction().remove(lightBoxOverLayFragment).commit();
                 }else {
