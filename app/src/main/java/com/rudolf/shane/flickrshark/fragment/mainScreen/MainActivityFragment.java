@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,7 @@ public class MainActivityFragment extends BaseFragment {
         GsonRequest<FlickrSearchPhotoModel> request = new GsonRequest<FlickrSearchPhotoModel>(Constants.FLICKR_SEARCH_URL, FlickrSearchPhotoModel.class, null) {
             @Override
             protected void deliverResponse(FlickrSearchPhotoModel response, boolean isFromCache) {
+                Log.d("shaneTest", "success response.photos.photo = " + response.photos.photo.size());
                 adapter.setData(response.photos.photo);
                 adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
