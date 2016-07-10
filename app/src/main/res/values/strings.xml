@@ -6,4 +6,5 @@
     <string name="username">User Name: </string>
     <string name="image_downloading_inprogress_error">Image is in downloading progress, please wait till it finish.</string>
     <string name="image_saved_to_camera">Image saved to cameras.</string>
+    <string name="network_error_message">Network error, please try again.</string>
 </resources>

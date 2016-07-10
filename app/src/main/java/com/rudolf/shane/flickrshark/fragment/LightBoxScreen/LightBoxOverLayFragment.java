@@ -93,7 +93,7 @@ public class LightBoxOverLayFragment extends BaseFragment{
 
             @Override
             public void deliverError(VolleyError error, FlickrInfoModel cachedResponse) {
-
+                Toast.makeText(getActivity(), R.string.network_error_message, Toast.LENGTH_LONG).show();
             }
         };
         requestToCancelOnDestroy.add(request);

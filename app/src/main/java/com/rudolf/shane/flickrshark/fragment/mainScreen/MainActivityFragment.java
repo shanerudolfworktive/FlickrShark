@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.rudolf.shane.flickrshark.R;
@@ -89,7 +89,7 @@ public class MainActivityFragment extends BaseFragment {
 
             @Override
             public void deliverError(VolleyError error, FlickrSearchPhotoModel cachedResponse) {
-                Log.e("shaneTest", "fail="+error.getLocalizedMessage());
+                Toast.makeText(getActivity(), R.string.network_error_message, Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         };
