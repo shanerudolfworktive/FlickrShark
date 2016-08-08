@@ -1,16 +1,16 @@
 package com.rudolf.shane.flickrshark;
 
-import android.os.RemoteException;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiSelector;
 import android.support.v4.content.res.ResourcesCompat;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.rudolf.shane.flickrshark.fragment.LightBoxScreen.LightBoxFragment;
-
-import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,11 +18,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Created by shane on 8/7/16.
+ * Created by shane on 8/8/16.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class LightBoxScreenTest {
+public class LightBoxScreenTestPressHome {
     private static final String PHOTO_URL = "https://farm9.staticflickr.com/8689/28222841893_df26e55e9c_o.jpg";
     private static final long PHOTO_ID = 28761457741L;
 
@@ -40,27 +40,13 @@ public class LightBoxScreenTest {
     }
 
     @Test
-    public void testDisplayingLightBoxFragment(){
-        mDevice.waitForIdle();
-        LightBoxFragment myFragment = (LightBoxFragment) mActivityRule.getActivity().getSupportFragmentManager().findFragmentByTag(LightBoxFragment.TAG_LIGHT_BOX_FRAGMENT);
-        if (myFragment == null || !myFragment.isVisible()) {
-            Assert.fail("not displaying lightboxFragment");
-        }
-    }
+    public void testNetworkErrorHandlingHome(){
+        mDevice.pressHome();
 
-    @Test
-    public void testOrientation(){
+        UiObject allAppsButton = mDevice.findObject(new UiSelector().description(mActivityRule.getActivity().getString(R.string.app_name)));
         try {
-            mDevice.setOrientationRight();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            mDevice.setOrientationLeft();
-            mDevice.setOrientationNatural();
-            mDevice.unfreezeRotation();
-        } catch (RemoteException e) {
+            allAppsButton.clickAndWaitForNewWindow();
+        } catch (UiObjectNotFoundException e) {
             e.printStackTrace();
         }
     }

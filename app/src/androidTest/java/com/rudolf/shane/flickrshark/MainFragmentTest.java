@@ -1,9 +1,13 @@
 package com.rudolf.shane.flickrshark;
 
+import android.os.RemoteException;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiSelector;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.android.volley.NetworkError;
@@ -60,6 +64,26 @@ public class MainFragmentTest {
     }
 
     @Test
+    public void testNetworkErrorHandlingHome(){
+        mDevice.pressHome();
+        final MainActivityFragment mainActivityFragment = (MainActivityFragment) mActivityRule.getActivity().getSupportFragmentManager().findFragmentByTag(MainActivityFragment.TAG_MAIN_ACTIVITY_FRAGMENT);
+        mActivityRule.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mainActivityFragment.handleFlickrSearchPhotoError(new NetworkError(), null);
+            }
+        });
+
+        UiObject allAppsButton = mDevice.findObject(new UiSelector().description(mActivityRule.getActivity().getString(R.string.app_name)));
+        try {
+            allAppsButton.clickAndWaitForNewWindow();
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+        onView(withText(R.string.network_error_message)).check(matches(withText(R.string.network_error_message)));
+    }
+
+    @Test
     public void testGenralErrorHandling(){
         final MainActivityFragment mainActivityFragment = (MainActivityFragment) mActivityRule.getActivity().getSupportFragmentManager().findFragmentByTag(MainActivityFragment.TAG_MAIN_ACTIVITY_FRAGMENT);
         mActivityRule.getActivity().runOnUiThread(new Runnable() {
@@ -70,5 +94,16 @@ public class MainFragmentTest {
         });
         mDevice.waitForIdle();
         onView(withText(R.string.generalErrorMessage)).check(matches(withText(R.string.generalErrorMessage)));
+    }
+
+    @Test
+    public void testDeviceRotate(){
+        try {
+            mDevice.unfreezeRotation();
+            mDevice.setOrientationRight();
+            mDevice.setOrientationNatural();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }
