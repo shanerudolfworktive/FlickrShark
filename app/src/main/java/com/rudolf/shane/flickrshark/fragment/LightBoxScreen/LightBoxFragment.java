@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  * Created by shane on 7/9/16.
  */
 public class LightBoxFragment extends BaseFragment{
+
+    public static String TAG_LIGHT_BOX_FRAGMENT = "TAG_LIGHT_BOX_FRAGMENT";
 
     Drawable thumpNailDrawable;
     String originalImageUrl;
