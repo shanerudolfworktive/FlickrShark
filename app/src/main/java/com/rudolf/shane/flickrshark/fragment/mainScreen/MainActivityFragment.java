@@ -23,6 +23,8 @@ import com.rudolf.shane.flickrshark.volley.GsonRequest;
  */
 public class MainActivityFragment extends BaseFragment {
 
+    public static final String TAG_MAIN_ACTIVITY_FRAGMENT = "TAG_MAIN_ACTIVITY_FRAGMENT";
+
     //View States
     Integer totalChildBeforOrientationChange = null;
     Integer listPositionBeforOrientationChange = null;
@@ -82,19 +84,27 @@ public class MainActivityFragment extends BaseFragment {
         GsonRequest<FlickrSearchPhotoModel> request = new GsonRequest<FlickrSearchPhotoModel>(Constants.FLICKR_SEARCH_URL, FlickrSearchPhotoModel.class, null) {
             @Override
             protected void deliverResponse(FlickrSearchPhotoModel response, boolean isFromCache) {
-                adapter.setData(response.photos.photo);
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
+                handleFlickrSearchPhotoSuccess(response, isFromCache);
             }
 
             @Override
             public void deliverError(VolleyError error, FlickrSearchPhotoModel cachedResponse) {
-                Toast.makeText(getActivity(), R.string.network_error_message, Toast.LENGTH_LONG).show();
-                swipeRefreshLayout.setRefreshing(false);
+                handleFlickrSearchPhotoError(error, cachedResponse);
             }
         };
         requestToCancelOnDestroy.add(request);
         return request;
+    }
+
+    public void handleFlickrSearchPhotoSuccess(FlickrSearchPhotoModel response, boolean isFromCache){
+        adapter.setData(response.photos.photo);
+        adapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void handleFlickrSearchPhotoError(VolleyError error, FlickrSearchPhotoModel cachedResponse){
+        Toast.makeText(getActivity(), R.string.network_error_message, Toast.LENGTH_LONG).show();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

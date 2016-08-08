@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().add(R.id.frameLayoutFragmentHolder, new MainActivityFragment()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.frameLayoutFragmentHolder, new MainActivityFragment(), MainActivityFragment.TAG_MAIN_ACTIVITY_FRAGMENT).commit();
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
