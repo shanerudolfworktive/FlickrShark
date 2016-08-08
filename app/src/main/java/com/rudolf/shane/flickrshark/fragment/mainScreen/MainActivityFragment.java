@@ -1,15 +1,17 @@
 package com.rudolf.shane.flickrshark.fragment.mainScreen;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.android.volley.NetworkError;
 import com.android.volley.VolleyError;
 import com.rudolf.shane.flickrshark.R;
 import com.rudolf.shane.flickrshark.base.BaseFragment;
@@ -103,8 +105,25 @@ public class MainActivityFragment extends BaseFragment {
     }
 
     public void handleFlickrSearchPhotoError(VolleyError error, FlickrSearchPhotoModel cachedResponse){
-        Toast.makeText(getActivity(), R.string.network_error_message, Toast.LENGTH_LONG).show();
+        if (error instanceof NetworkError) {
+            displayErrorDialogWithMsg(getString(R.string.network_error_message));
+        }else {
+            displayErrorDialogWithMsg(getString(R.string.generalErrorMessage));
+        }
+
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void displayErrorDialogWithMsg(String msg){
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.errorTitle)
+                .setMessage(msg)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
